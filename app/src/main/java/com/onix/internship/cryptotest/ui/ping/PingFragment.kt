@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.onix.internship.cryptotest.data.api.RetrofitBuilder
 import com.onix.internship.cryptotest.data.api.ping.Client
@@ -43,6 +45,7 @@ class PingFragment : Fragment() {
 
     private fun showDialogFragment(show: Boolean) {
         if (show) {
+            fragment.arguments = getExampleArgs()
             fragment.show(parentFragmentManager, "some tag")
         } else {
             if (fragment.isAdded) {
@@ -51,9 +54,21 @@ class PingFragment : Fragment() {
         }
     }
 
+    // as example
+    private fun getExampleArgs(): Bundle {
+        val args = Bundle()
+        args.putString("Title", "some title")
+        args.putString("Message", "some message")
+        return args
+    }
+
     private fun showMessage(data: String) {
         Snackbar.make(requireView(), data, Snackbar.LENGTH_SHORT)
             .show()
 
+    }
+
+    private fun navigate(navDirection: NavDirections) {
+        findNavController().navigate(navDirection)
     }
 }

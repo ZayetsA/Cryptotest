@@ -7,20 +7,21 @@
 
         <variable
             name="viewModel"
-            type="com.onix.internship.cryptotest.ui.dialog.DialogViewModel" />
+            type="com.onix.internship.cryptotest.ui.dialog.ProgressDialogViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="30dp"
+        android:paddingHorizontal="50dp"
+        android:paddingVertical="30dp"
         tools:context=".ui.dialog.ProgressDialogFragment">
 
         <TextView
-            android:id="@+id/dialogHeader"
+            android:id="@+id/dialogTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loading"
+            android:text="@{viewModel.model.title}"
             android:textColor="@color/black"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,6 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
+            android:id="@+id/dialogProgressBar"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,6 +39,18 @@
             android:indeterminateTintMode="src_atop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/dialogHeader" />
+            app:layout_constraintTop_toBottomOf="@id/dialogTitle" />
+
+        <TextView
+            android:id="@+id/dialogMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{viewModel.model.message}"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dialogProgressBar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

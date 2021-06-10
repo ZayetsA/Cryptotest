@@ -5,15 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.onix.internship.cryptotest.R
+import androidx.fragment.app.viewModels
+import com.onix.internship.cryptotest.databinding.FragmentDialogBinding
 
 
 class ProgressDialogFragment : DialogFragment() {
 
+    private val viewModel: ProgressDialogViewModel by viewModels {
+        ProgressDialogViewModelFactory(
+            arguments
+        )
+    }
+    private lateinit var binding: FragmentDialogBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_dialog, container, false)
+    ): View {
+        binding = FragmentDialogBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
     }
 }

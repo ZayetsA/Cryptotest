@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 data class Response(
 
 	@SerialName("gecko_says")
-	val geckoSays: String? = null
+	val geckoSays: String = ""
 )

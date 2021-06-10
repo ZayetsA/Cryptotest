@@ -1,12 +1,16 @@
 package com.onix.internship.cryptotest.data.api
 
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.onix.internship.cryptotest.data.api.ping.Service
 import com.onix.internship.cryptotest.util.Constants
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
+@ExperimentalSerializationApi
 object RetrofitBuilder {
     private val interceptor = run {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
@@ -20,7 +24,7 @@ object RetrofitBuilder {
         return Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
 

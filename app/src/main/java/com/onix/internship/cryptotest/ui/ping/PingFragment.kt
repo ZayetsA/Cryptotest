@@ -9,8 +9,11 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.onix.internship.cryptotest.data.api.RetrofitBuilder
 import com.onix.internship.cryptotest.data.api.ping.Helper
+import com.onix.internship.cryptotest.data.model.Response
 import com.onix.internship.cryptotest.databinding.FragmentPingBinding
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 class PingFragment : Fragment() {
     private val viewModel: PingViewModel by viewModels {
         PingViewModelFactory(
@@ -32,18 +35,11 @@ class PingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-        setupObservers()
+        viewModel.data.observe(viewLifecycleOwner, ::showMessage)
     }
 
-    private fun setupObservers() {
-        viewModel.data.observe(viewLifecycleOwner, {
-            it.geckoSays?.let { it1 ->
-                Snackbar.make(
-                    requireView().rootView,
-                    it1,
-                    Snackbar.LENGTH_SHORT
-                ).show()
-            }
-        })
+    private fun showMessage(response: Response) {
+        Snackbar.make(requireView().rootView, response.geckoSays.toString(), Snackbar.LENGTH_SHORT)
+            .show()
     }
 }

@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.onix.internship.cryptotest.data.api.RetrofitBuilder
 import com.onix.internship.cryptotest.data.api.ping.Helper
-import com.onix.internship.cryptotest.data.model.Response
 import com.onix.internship.cryptotest.databinding.FragmentPingBinding
 import kotlinx.serialization.ExperimentalSerializationApi
 
@@ -38,8 +37,10 @@ class PingFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner, ::showMessage)
     }
 
-    private fun showMessage(response: Response) {
-        Snackbar.make(requireView().rootView, response.geckoSays.toString(), Snackbar.LENGTH_SHORT)
-            .show()
+    private fun showMessage(data: String?) {
+        if (data != null) {
+            Snackbar.make(requireView(), data, Snackbar.LENGTH_SHORT)
+                .show()
+        }
     }
 }

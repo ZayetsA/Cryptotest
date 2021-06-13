@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
     app:startDestination="@id/pingFragment">
 
     <fragment
         android:id="@+id/pingFragment"
         android:name="com.onix.internship.cryptotest.ui.ping.PingFragment"
-        android:label="PingFragment" />
+        android:label="PingFragment">
+        <action
+            android:id="@+id/action_pingFragment_to_stubFragment"
+            app:destination="@id/stubFragment" />
+        <action
+            android:id="@+id/action_pingFragment_to_progressDialogFragment"
+            app:destination="@id/progressDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stubFragment"
+        android:name="com.onix.internship.cryptotest.ui.stub.StubFragment"
+        android:label="StubFragment">
+        <action
+            android:id="@+id/action_stubFragment_to_pingFragment"
+            app:destination="@id/pingFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/progressDialogFragment"
+        android:name="com.onix.internship.cryptotest.ui.dialog.ProgressDialogFragment"
+        android:label="ProgressDialogFragment">
+        <argument
+            android:name="Title"
+            app:argType="string" />
+        <argument
+            android:name="Message"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_progressDialogFragment_to_pingFragment"
+            app:destination="@id/pingFragment" />
+    </dialog>
 </navigation>

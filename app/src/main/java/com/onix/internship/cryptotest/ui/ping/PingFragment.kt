@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.onix.internship.cryptotest.data.api.RetrofitBuilder
 import com.onix.internship.cryptotest.data.api.ping.Client
 import com.onix.internship.cryptotest.databinding.FragmentPingBinding
-import com.onix.internship.cryptotest.ui.dialog.ProgressDialogFragment
+import com.onix.internship.cryptotest.util.DialogFragmentStates
 import kotlinx.serialization.ExperimentalSerializationApi
 
 @ExperimentalSerializationApi
@@ -24,7 +24,6 @@ class PingFragment : Fragment() {
     }
 
     private lateinit var binding: FragmentPingBinding
-    private val fragment = ProgressDialogFragment()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,34 +37,42 @@ class PingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
-        viewModel.data.observe(viewLifecycleOwner, ::showMessage)
+        viewModel.navigationEvent.observe(viewLifecycleOwner, ::navigate)
+        viewModel.data.observe(viewLifecycleOwner, ::showSneakBar)
         viewModel.isDataLoading.observe(viewLifecycleOwner, ::showDialogFragment)
     }
 
 
-    private fun showDialogFragment(show: Boolean) {
-        if (show) {
-            fragment.arguments = getExampleArgs()
-            fragment.show(parentFragmentManager, "some tag")
-        } else {
-            if (fragment.isAdded) {
-                fragment.dismiss()
+    private fun showDialogFragment(state: DialogFragmentStates) {
+        when (state) {
+            DialogFragmentStates.SHOW -> {
+                showProgressDialog()
             }
+            DialogFragmentStates.HIDE -> {
+                dismissProgressDialog()
+            }
+            else -> return
         }
     }
 
-    // as example
-    private fun getExampleArgs(): Bundle {
-        val args = Bundle()
-        args.putString("Title", "some title")
-        args.putString("Message", "some message")
-        return args
+    private fun showProgressDialog() {
+        navigate(
+            PingFragmentDirections.actionPingFragmentToProgressDialogFragment(
+                "some title",
+                "some message"
+            )
+        )
     }
 
-    private fun showMessage(data: String) {
+    private fun dismissProgressDialog() {
+        with(findNavController()) {
+            popBackStack()
+        }
+    }
+
+    private fun showSneakBar(data: String) {
         Snackbar.make(requireView(), data, Snackbar.LENGTH_SHORT)
             .show()
-
     }
 
     private fun navigate(navDirection: NavDirections) {
